@@ -105,13 +105,6 @@ def main():
   for rider in rider_params:
     print(rider)
 
-  '''
-  ## Add the names of each rider to the plot.
-  rider_names = ', '.join(rider['rider_name'] for rider in rider_params)
-  ax1.annotate('Riders: ' + rider_names, xy=(0.05, 0.95),
-                xycoords='axes fraction', fontsize=16, ha='left', va='top')
-  '''
-
   ## Add the total error to the plot.
   ax2.annotate('Error: ' + str(error), xy=(0.5, 0.01), xycoords='axes fraction',
                 fontsize=16, ha='center', va='bottom')

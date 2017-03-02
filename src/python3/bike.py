@@ -42,25 +42,6 @@ class Bike:
 
     self._k4 = self._m_bike_x / (self._m_bike_z * self._A) * math.cos(self._beta)
 
-    '''
-    print('bike_Kxx: ' + str(self._bike_Kxx))
-    print('m_bike: ' + str(self._m_bike))
-    print('R_f: ' + str(self._Rf))
-    print('e: ' + str(self._e))
-    print('g: ' + str(self._g))
-
-    print('A: ' + str(self._A))
-    print('m_bike_x: ' + str(self._m_bike_x))
-    print('m_bike_z: ' + str(self._m_bike_z))
-    print('beta: ' + str(self._beta))
-
-    print('trail: ' + str(self._trail))
-    print('k1: ' + str(self._k1))
-    print('k2: ' + str(self._k2))
-    print('k3: ' + str(self._k3))
-    print('k4: ' + str(self._k4))
-    '''
-
     self._compute_control_spring(control_spring, top_speed)
     self._compute_control_sensitivity(control_sensitivity, top_speed)
 
@@ -207,14 +188,14 @@ class Bike:
     self._A              = 0.0
     self._alpha          = 0.0
     self._beta           = 0.0
-    self._Cr            = 0.0
-    self._Cx            = 0.0
-    self._Cz            = 0.0
+    self._Cr             = 0.0
+    self._Cx             = 0.0
+    self._Cz             = 0.0
     self._e              = 0.0
-    self._Hz            = 0.0
-    self._Rh            = 0.0
-    self._Rf            = 0.0
-    self._Rr            = 0.0
+    self._Hz             = 0.0
+    self._Rh             = 0.0
+    self._Rf             = 0.0
+    self._Rr             = 0.0
     self._m_frame        = 0.0
     self._m_crank        = 0.0
     self._m_front_wheel  = 0.0
@@ -459,29 +440,7 @@ class Bike:
       ((self._Rr ** 2) * (self._m_rear_wheel / self._m_bike)) +
       ((self._Cz ** 2) * (self._m_crank / self._m_bike)))
 
-    '''
-    ## Adding this for now to make things match the findings of the team over
-    ## the years.
-    self._bike_Kxx = self._bike_Kxx / 2
-    '''
-
   def _compute_chain_stays(self):
-    '''
-    chainstay_slope = (self._Cz - self._Rr) / (self._A + self._Cx)
-    chainstay_bottom_x = 0
-    chainstay_bottom_z = self._Rr
-    chainstay_z_intercept = chainstay_bottom_z -\
-                            chainstay_slope * chainstay_bottom_x
-
-    a = chainstay_slope * chainstay_slope + 1
-    b = 2 * (chainstay_z_intercept - self._Rr) * chainstay_slope - 2 * self._A
-    c = self._A * self._A + (chainstay_z_intercept - self._Rr) *\
-        (chainstay_z_intercept - self._Rr) - (self._Rr * self._Rr)
-
-    descrim = b * b - 4 * a * c
-
-    if descrim < 0 or (descrim > 0 and self._Cx < 0):
-    '''
     self._t2x = (self._A + self._Cx) / 2
     self._t2z = ((self._Cz - self._Rr) / 2) + self._Rr
     self._t2l = 2 * math.sqrt((self._A + self._Cx) *\
@@ -501,7 +460,6 @@ class Bike:
       control_spring.append(self._k1 - self._k2 * (v * v))
 
   def _compute_crank(self):
-    ## Crank
     crank_x = self._Cx + self._A
     crank_z = self._Cz
 
@@ -769,16 +727,8 @@ class Bike:
     ## Lower Seat
     self._seat_bottom_start_x = self._Hx
     self._seat_bottom_start_z = self._Hz
-
-    #torso_delta_x = self._torso_depth * math.cos(self._alpha - (math.pi / 2) + self._theta)
-    #torso_delta_z = self._torso_depth * math.sin(self._alpha - (math.pi / 2) + self._theta) 
-    #self._seat_bottom_end_x = self._Hx + torso_delta_x
-    #self._seat_bottom_end_z = self._Hz + torso_delta_z
     self._seat_bottom_end_x = self._Hx + self._torso_depth * math.cos(self._theta)
     self._seat_bottom_end_z = self._Hz + self._torso_depth * math.sin(self._theta)
-
-    #self._seat_bottom_end_x = self._Hx + (self._leg_length / 4) * math.cos(self._theta)
-    #self._seat_bottom_end_z = self._Hz + (self._leg_length / 4) * math.sin(self._theta)
 
   def _compute_seat_stays(self):
     ## Seat Stay
@@ -937,13 +887,6 @@ class Bike:
     merged_bb = BoundingBox([0, 0], [0, 0])
     for bounding_box in bounding_boxes:
       merged_bb.merge(bounding_box)
-
-    '''
-    print('merged_bb -- lower_left: [' + str(merged_bb._lower_left_x) + ', ' +\
-          str(merged_bb._lower_left_y) + ']')
-    print('merged_bb -- top_right : [' + str(merged_bb._top_right_x) + ', ' +\
-          str(merged_bb._top_right_y) + ']')
-    '''
 
     ## Common bounding box for a bike. Will need to update this later so it
     ## expands and contracts with actual bike size.
@@ -1157,11 +1100,6 @@ class Bike:
       x_2 = (-b - descrim) / (2 * a)
       z_2 = seat_slope * x_2 + seat_z_intercept
 
-      #print('x_1, z_1: ' + str(x_1) + ', ' + str(z_1))
-      #print('x_2, z_2: ' + str(x_2) + ', ' + str(z_2))
-      #print('seat_bottom_start_x: ' + str(self._seat_bottom_start_x))
-      #print('seat_bottom_end_x: ' + str(self._seat_bottom_end_x))
-
       if x_1 <= self._seat_back_start_x and x_2 >= self._seat_back_end_x:
         return False
 
@@ -1194,11 +1132,6 @@ class Bike:
       z_1 = seat_slope * x_1 + seat_z_intercept
       x_2 = (-b - descrim) / (2 * a)
       z_2 = seat_slope * x_2 + seat_z_intercept
-
-      #print('x_1, z_1: ' + str(x_1) + ', ' + str(z_1))
-      #print('x_2, z_2: ' + str(x_2) + ', ' + str(z_2))
-      #print('seat_bottom_start_x: ' + str(self._seat_bottom_start_x))
-      #print('seat_bottom_end_x: ' + str(self._seat_bottom_end_x))
 
       if x_1 <= self._seat_bottom_start_x and x_2 >= self._seat_bottom_end_x:
         return False
@@ -1241,11 +1174,6 @@ class Bike:
       z_1 = seat_slope * x_1 + seat_z_intercept
       x_2 = (-b - descrim) / (2 * a)
       z_2 = seat_slope * x_2 + seat_z_intercept
-
-      #print('x_1, z_1: ' + str(x_1) + ', ' + str(z_1))
-      #print('x_2, z_2: ' + str(x_2) + ', ' + str(z_2))
-      #print('seat_bottom_start_x: ' + str(self._seat_bottom_start_x))
-      #print('seat_bottom_end_x: ' + str(self._seat_bottom_end_x))
 
       if x_1 <= self._seat_back_start_x and x_2 >= self._seat_back_end_x:
         return False
@@ -1300,8 +1228,6 @@ class Bike:
     return True
 
   def _wheels_clear_riders_head(self):
-    #(R0-R1)^2 <= (x0-x1)^2+(y0-y1)^2 <= (R0+R1)^2
-
     ## Check if the front wheel intersects the rider's head.
     sum_of_diffs = math.pow(self._A - self._head_cg_x, 2) + math.pow(self._Rf - self._head_cg_z, 2)
     if math.pow((self._Rf - (self._head_diameter / 2)), 2) <= sum_of_diffs and\
@@ -1390,14 +1316,14 @@ class Bike:
     self._A              = single_bike_params['wheelbase']
     self._alpha          = math.radians(single_bike_params['hip_angle'])
     self._beta           = math.radians(single_bike_params['headtube_angle'])
-    self._Cr            = single_bike_params['crank_radius']
-    self._Cx            = single_bike_params['crank_x_offset']
-    self._Cz            = single_bike_params['crank_z_offset']
+    self._Cr             = single_bike_params['crank_radius']
+    self._Cx             = single_bike_params['crank_x_offset']
+    self._Cz             = single_bike_params['crank_z_offset']
     self._e              = single_bike_params['fork_offset']
-    self._Hz            = single_bike_params['seat_height']
-    self._Rh            = single_bike_params['handlebar_radius']
-    self._Rf            = single_bike_params['front_wheel_radius']
-    self._Rr            = single_bike_params['rear_wheel_radius']
+    self._Hz             = single_bike_params['seat_height']
+    self._Rh             = single_bike_params['handlebar_radius']
+    self._Rf             = single_bike_params['front_wheel_radius']
+    self._Rr             = single_bike_params['rear_wheel_radius']
     self._m_frame        = single_bike_params['frame_mass']
     self._m_crank        = single_bike_params['crank_mass']
     self._m_front_wheel  = single_bike_params['front_wheel_mass']
@@ -1432,20 +1358,14 @@ class Bike:
     fig = plt.gcf()
 
     top_speed = len(control_sensitivity)
-    '''
-    control_spring = []
-    control_sensitivity = []
-    self.compute_patterson_curves(control_spring, control_sensitivity, top_speed) 
-    error = self.compute_sum_of_diff_of_squares(target_control_sensitivity,
-                                                control_sensitivity)
-    '''
-
     x_axis_values = range(top_speed)
+
     ax.set_xlabel('Speed [m/s]')
     ax.set_ylabel('Control Sensitivity []')
-    #ax.plot(x_axis_values, target_control_sensitivity, 'ko', label='target')
+
     ax.plot(x_axis_values, control_sensitivity, formatting, linewidth=2.0, 
             label=rider_name)
+
     ax.legend(bbox_to_anchor=(1, 1))
     ax.grid(True)
 

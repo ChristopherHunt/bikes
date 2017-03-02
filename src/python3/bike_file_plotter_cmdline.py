@@ -50,7 +50,6 @@ class BikeFilePlotter:
     axes[1].set_title('Control Sensitivity')
 
     ## Adjust plot to ensure that things fit correctly.
-    #plt.tight_layout()
     plt.subplots_adjust(wspace=0.2, hspace=0.2)
 
     target_control_sensitivity = simulation_params.target_control_sensitivity
@@ -142,7 +141,7 @@ class BikeFilePlotter:
 # Prints the usage string to stdout.
 def print_usage():
     print('Improper arguments!\n'
-          'Run as python3 bike_file_plotter.py <output_filename.pdf>'
+          'Run as python3 bike_file_plotter_cmd.py <output_filename.pdf>'
           ' <bikes_to_plot.txt> <top_speed> <target_control_sensitivity.txt>'
           ' <rider_params>+\n'
           '|  output_filename.pdf = the file to write the bike plots to\n'
